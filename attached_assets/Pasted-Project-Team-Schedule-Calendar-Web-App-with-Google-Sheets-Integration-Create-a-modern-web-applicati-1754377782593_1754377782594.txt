@@ -1,0 +1,92 @@
+Project: Team Schedule Calendar Web App with Google Sheets Integration
+Create a modern web application that displays team schedules in a Google Calendar-style interface. The app should connect to a Google Sheet as the database and show team member shifts in a weekly calendar view.
+Requirements:
+1. Google Sheets Integration:
+
+Connect to Google Sheets using the Sheets API
+Sheet name: "Schedule"
+Column structure:
+
+Column A: Team Member (name)
+Column B: Analyst (supervisor name)
+Column C: Login Time (format: "10:00 AM", "2:30 PM", etc.)
+Column D: Time Offs (format: "Monday, Tuesday" - comma-separated days)
+
+
+Each team member works a 9-hour shift starting from their login time
+
+2. UI Design:
+
+Google Calendar-inspired clean, modern interface
+Header with app title "Team Schedule Calendar"
+Dropdown to select analyst (populated from Column B data)
+Weekly calendar grid layout:
+
+Days: Sunday through Saturday (columns)
+Time slots: 10:00 AM to 10:00 PM (rows, hourly intervals)
+Left column shows time labels (10 AM, 11 AM, 12 PM, etc.)
+
+
+
+3. Functionality:
+
+Dropdown loads unique analyst names from the sheet
+When analyst is selected, display all team members assigned to that analyst
+Show each team member as a colored block spanning their 9-hour shift
+Team member blocks should display:
+
+Team member name
+Shift time range (e.g., "10:00 AM - 7:00 PM")
+
+
+Handle time-off days by graying out or not showing blocks on those days
+Responsive design for mobile and desktop
+Hover tooltips showing detailed shift information
+
+4. Technical Specifications:
+
+Use React or vanilla JavaScript
+Tailwind CSS for styling
+Google Sheets API for data fetching
+Grid-based layout for the calendar
+Color-coded blocks for different team members
+Handle 12-hour to 24-hour time conversion
+Calculate 9-hour shifts automatically from login time
+
+5. Visual Features:
+
+Clean, professional Google-style design
+Blue color scheme for schedule blocks
+Subtle shadows and hover effects
+Loading states when fetching data
+Empty state when no team members found for selected analyst
+Responsive grid that works on all screen sizes
+
+6. Data Processing:
+
+Parse time-off data (comma-separated days)
+Convert 12-hour format times to 24-hour for calculations
+Filter team members by selected analyst
+Position schedule blocks accurately in time slots
+Handle edge cases (overnight shifts, invalid data)
+
+7. Google Sheets API Setup:
+
+Include instructions for setting up Google Sheets API access
+Use API key authentication for public sheets or OAuth for private sheets
+Provide clear documentation on how to connect to the user's specific Google Sheet
+
+Sample Data Structure:
+Row 1: Team Member | Analyst | Login Time | Time Offs
+Row 2: John Doe | Analyst A | 10:00 AM | Monday, Wednesday  
+Row 3: Jane Smith | Analyst A | 2:00 PM | Tuesday
+Row 4: Mike Johnson | Analyst B | 6:00 AM | Friday, Saturday
+Deliverables:
+
+Complete working web application
+Google Sheets API integration
+Responsive calendar interface
+Clear setup instructions
+Documentation for connecting to user's Google Sheet
+
+Create a production-ready application that's easy to deploy and customize. Focus on clean code, good user experience, and reliable Google Sheets integration.
