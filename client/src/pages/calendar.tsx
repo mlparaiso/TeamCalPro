@@ -10,8 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Calendar, RefreshCw, Info } from "lucide-react";
 import { CalendarGrid } from "@/components/calendar-grid";
 import { StatisticsCards } from "@/components/statistics-cards";
-import { GoogleAuthButton } from "@/components/google-auth-button";
-import { SpreadsheetSelector } from "@/components/spreadsheet-selector";
+import { GoogleSheetsIntegration } from "@/components/google-sheets-integration";
 import { DAYS_OF_WEEK } from "@/lib/time-utils";
 import { queryClient } from "@/lib/queryClient";
 import type { AnalystOption, ScheduleData, Statistics, TeamMember } from "@shared/schema";
@@ -38,37 +37,12 @@ export default function CalendarPage() {
     queryKey: ["/api/statistics", selectedAnalyst, selectedDay],
   });
 
-  const handleDataLoaded = async (teamMembers: TeamMember[]) => {
-    try {
-      setIsLoadingData(true);
-      
-      // Send data to backend storage
-      const response = await fetch('/api/sync-data', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ teamMembers }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to sync data');
-      }
-
-      // Invalidate all queries to refresh data
-      queryClient.invalidateQueries({ queryKey: ["/api/analysts"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/schedule"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/statistics"] });
-      
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to sync data to the application",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoadingData(false);
-    }
+  const handleDataLoaded = () => {
+    // Data refresh is handled by the GoogleSheetsIntegration component
+    toast({
+      title: "Success",
+      description: "Schedule data has been updated successfully",
+    });
   };
 
   const handleRefresh = () => {
@@ -146,14 +120,8 @@ export default function CalendarPage() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
         
-        {/* Google Authentication */}
-        <GoogleAuthButton onSignInSuccess={() => {}} onSignOut={() => {}} />
-        
-        {/* Spreadsheet Selector */}
-        <SpreadsheetSelector 
-          onDataLoaded={handleDataLoaded} 
-          isLoading={isLoadingData}
-        />
+        {/* Google Sheets Integration */}
+        <GoogleSheetsIntegration onDataLoaded={handleDataLoaded} />
 
         {/* Loading State */}
         {scheduleLoading && (
