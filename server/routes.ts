@@ -5,7 +5,41 @@ import { teamMemberSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Get team members from Google Sheets
+  // Sync data from client-side Google Sheets OAuth
+  app.post("/api/sync-data", async (req, res) => {
+    try {
+      const { teamMembers } = req.body;
+      
+      if (!teamMembers || !Array.isArray(teamMembers)) {
+        return res.status(400).json({ 
+          message: "Invalid data format: teamMembers array required" 
+        });
+      }
+
+      // Validate data
+      const validatedMembers = teamMembers.map((member: any) => {
+        const result = teamMemberSchema.safeParse(member);
+        if (!result.success) {
+          throw new Error(`Invalid data format: ${result.error.message}`);
+        }
+        return result.data;
+      });
+
+      storage.setTeamMembers(validatedMembers);
+      
+      res.json({ 
+        message: "Data synced successfully", 
+        count: validatedMembers.length 
+      });
+    } catch (error) {
+      console.error("Error syncing data:", error);
+      res.status(500).json({ 
+        message: error instanceof Error ? error.message : "Failed to sync data" 
+      });
+    }
+  });
+
+  // Get team members from Google Sheets (legacy API key method)
   app.post("/api/sync-sheets", async (req, res) => {
     try {
       const { spreadsheetId, apiKey } = req.body;

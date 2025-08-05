@@ -35,18 +35,19 @@ Preferred communication style: Simple, everyday language.
 ### External Dependencies
 - **Google Sheets API**: Primary data source for team schedules
   - Reads from "Schedule" sheet with structured columns (Team Member, Analyst, Login Time, Time Offs)
-  - Requires API key and spreadsheet ID for authentication
+  - Uses OAuth 2.0 authentication for secure access to user's spreadsheets
+  - Requires VITE_GOOGLE_CLIENT_ID and VITE_GOOGLE_API_KEY environment variables
 - **Neon Database**: PostgreSQL hosting service for production data persistence
 - **Drizzle Kit**: Database migration and schema management
 - **Replit Integration**: Development environment optimizations and error handling
 
 ### Key Features
-- **Calendar Interface**: Google Calendar-inspired weekly view with hourly time slots (10 AM - 10 PM)
+- **Calendar Interface**: Team member names in left column, time slots (10 AM - 10 PM) across top header
 - **Analyst Filtering**: Dropdown selection to filter schedules by supervisor
-- **Day Selection**: View schedules for specific days of the week
+- **Day Selection**: Day-of-week dropdown (Sunday to Saturday) instead of week selection
 - **Shift Visualization**: Color-coded blocks showing 9-hour shifts with hover tooltips
 - **Time-off Handling**: Gray-out or hide shifts for designated off days
-- **Real-time Sync**: Manual Google Sheets synchronization with success/error feedback
+- **Google OAuth Integration**: Secure sign-in with Google for spreadsheet access
 - **Responsive Design**: Mobile and desktop optimized layouts
 - **Statistics Dashboard**: Overview cards showing total members, active shifts, and time-offs
 
